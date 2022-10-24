@@ -1,5 +1,7 @@
 # go-filetype (WIP)
 
+## Apparently Microsoft Defender flags the build as Trojan:Win32/Wacatac.B!ml
+
 ## Supported file formats
 
 ### Image
@@ -94,19 +96,20 @@
 | lnk       | application/x-ms-shortcut             | Windows shell link (shortcut) file         |           |         |
 | msi       | application/x-msi                     | Microsoft Software Installer               |           |         |
 | vdi       | application/x-virtualbox-vdi          | Oracle VirtualBox Image                    |           |         |
+| ad1       | application/octet-stream              | Forensic Toolkit FTK Imager Image file     |           |         |
+| elf       | application/x-elf                     | Executable and Linkable Format             |           |         |
 
 ## TODO
 
-- ELF
 - .lib Could not find much about the format, might use `ar` file format: https://en.wikipedia.org/wiki/Ar_(Unix)#File_format_details
 - .so
-- .ad1
-- .vmem (53) FF 00 F0 53 FF 00 F0?
+- .vmem Maybe (53) FF 00 F0 53 FF 00 F0 - though don't have enough sample to check
 - .vmss/.vmsn
 - .vmdk
-- .scr
+- .scr Probably not possible as ".exe" and ".scr" files are almost the same
 - encrypted zip?
 - .zlib
 - .msg
 - .gz
+- .evt(x)
 - database formats

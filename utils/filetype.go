@@ -52,7 +52,7 @@ func newType(ext string, mime string, desc string) FileType {
 func Get(path string) (FileType, error) {
 	file, _ := os.OpenFile(path, os.O_RDONLY, 0666)
 	defer file.Close()
-	var contentByte = make([]byte, 500000)
+	var contentByte = make([]byte, 512000)
 	numByte, _ := file.Read(contentByte)
 	contentByte = contentByte[:numByte]
 	t, err := GetFromBuffer(contentByte)
@@ -61,6 +61,20 @@ func Get(path string) (FileType, error) {
 		t, err = GetFromBuffer(buf)
 	}
 	return t, err
+}
+
+/*
+Flags a file as suspicious based on a combination of extension and magic bytes, with magic bytes having the most significance.
+*/
+func IsSus(path string) bool { // TODO
+	return false
+}
+
+func CBAlg() {
+	/* TODO Content Based File Type Detection Algorithm
+	Byte frequency analysis
+	Byte frequency cross-correlation analysis ??
+	*/
 }
 
 // https://medium.com/asecuritysite-when-bob-met-alice/the-core-of-digital-forensics-magic-numbers-fd3e6d7a225
@@ -369,7 +383,8 @@ func GetFromBuffer(buf []byte) (FileType, error) {
 			if characteristic&0x0002 > 0 { // Is valid executable
 				return newType("exe", "application/x-msdownload", "Executable file for Microsoft Windows"), nil
 			}
-			// TODO Check whether an executable image is 32-bit or 64-bit using the optional header: https://learn.microsoft.com/en-us/windows/win32/debug/pe-format#optional-header-image-only
+			// TODO Check whether an executable image is 32-bit or 64-bit using the COFF File Header: https://learn.microsoft.com/en-us/windows/win32/debug/pe-format#optional-header-image-only
+			// https://justaresearchguy.com/how-about-to-inspect-pe-format/
 			// https://tech-zealots.com/malware-analysis/pe-portable-executable-structure-malware-analysis-part-2/
 		}
 		//return newType("exe", "application/x-msdownload", "Executable file for Microsoft Windows"), nil
@@ -383,6 +398,18 @@ func GetFromBuffer(buf []byte) (FileType, error) {
 	}
 	if hasPrefix(buf, 0x4C, 0x00, 0x00, 0x00, 0x01, 0x14, 0x02, 0x00) { // LNK
 		return newType("lnk", "application/x-ms-shortcut", "Windows shell link (shortcut) file"), nil
+	}
+	if hasPrefixOffset(buf, 512, 0x41, 0x44, 0x4C, 0x4F, 0x47, 0x49, 0x43, 0x41, 0x4C, 0x49, 0x4D, 0x41, 0x47, 0x45) { // AD1
+		if hasPrefix(buf, 0x41, 0x44, 0x53, 0x45, 0x47, 0x4D, 0x45, 0x4E, 0x54, 0x45, 0x44, 0x46, 0x49, 0x4C, 0x45) { // AD1 - segment
+			return newType("ad1", "application/octet-stream", "Forensic Toolkit FTK Imager Image segment file"), nil
+		}
+		return newType("ad1", "application/octet-stream", "Forensic Toolkit FTK Imager Image file"), nil
+	}
+	if hasPrefixOffset(buf, 512, 0x41, 0x44, 0x43, 0x52, 0x59, 0x50, 0x54) { // AD1 - encrypted
+		return newType("ad1", "application/octet-stream", "Encrypted Forensic Toolkit FTK Imager Image file"), nil
+	}
+	if hasPrefix(buf, 0x7F, 0x45, 0x4C, 0x46) { //ELF
+		return newType("elf", "application/x-elf", "Executable and Linkable Format"), nil
 	}
 	return FileType{}, errors.New("Unknown filetype")
 }

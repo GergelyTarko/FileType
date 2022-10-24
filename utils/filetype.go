@@ -361,7 +361,6 @@ func GetFromBuffer(buf []byte) (FileType, error) {
 	}
 	if hasPrefix(buf, 0x4D, 0x5A) && len(buf) > 64 { // PE FILE http://www.pelib.com/resources/luevel.txt
 		e_lfanew := binary.LittleEndian.Uint32(buf[60:64]) // PE Header location
-		fmt.Print(e_lfanew)
 		if len(buf) > int(e_lfanew) {
 			characteristic := binary.LittleEndian.Uint16(buf[e_lfanew+22 : e_lfanew+24])
 			if characteristic&0x2000 > 0 { // DLL

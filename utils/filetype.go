@@ -63,6 +63,7 @@ func Get(path string) (FileType, error) {
 	return t, err
 }
 
+// https://medium.com/asecuritysite-when-bob-met-alice/the-core-of-digital-forensics-magic-numbers-fd3e6d7a225
 // https://en.wikipedia.org/wiki/List_of_file_signatures
 // https://sceweb.sce.uhcl.edu/abeysekera/itec3831/labs/FILE%20SIGNATURES%20TABLE.pdf
 // https://www.fileextensionguru.com/m4v
@@ -206,7 +207,7 @@ func GetFromBuffer(buf []byte) (FileType, error) {
 	}
 	if hasPrefix(buf, 0x52, 0x49, 0x46, 0x46) { // RIFF
 		if hasPrefixOffset(buf, 8, 0x57, 0x41, 0x56, 0x45) { // WAV
-			return newType("wav", "audio/x-wav", "Flash Video file"), nil
+			return newType("wav", "audio/x-wav", "Waveform Audio File Format"), nil
 
 		}
 		if hasPrefixOffset(buf, 8, 0x41, 0x56, 0x49, 0x20) { // AVI
@@ -347,6 +348,42 @@ func GetFromBuffer(buf []byte) (FileType, error) {
 		if hasPrefixOffset(buf, 512, 0x09, 0x08, 0x10, 0x00, 0x00, 0x06, 0x05, 0x00) { // XLS
 			return newType("xls", "application/vnd.ms-excel", "MS Office Word document file"), nil
 		}
+		if hasPrefix(buf, 0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x3E, 0x00, 0x04, 0x00, 0xFE, 0xFF, 0x0C, 0x00, 0x06) || // 64-bit msi?
+			hasPrefix(buf, 0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x3E, 0x00, 0x03, 0x00, 0xFE, 0xFF, 0x09, 0x00, 0x06) { // 32-bit msi?
+			return newType("msi", "application/x-msi", "Microsoft Software Installer"), nil
+		}
+	}
+	/*  ================================================
+		==================== Other======================
+	    ================================================ */
+	if hasPrefix(buf, 0xCA, 0xFE, 0xBA, 0xBE) { // JAVA CLASS
+		return newType("class", "application/x-java-class", "Java class file"), nil
+	}
+	if hasPrefix(buf, 0x4D, 0x5A) && len(buf) > 64 { // PE FILE http://www.pelib.com/resources/luevel.txt
+		e_lfanew := binary.LittleEndian.Uint32(buf[60:64]) // PE Header location
+		fmt.Print(e_lfanew)
+		if len(buf) > int(e_lfanew) {
+			characteristic := binary.LittleEndian.Uint16(buf[e_lfanew+22 : e_lfanew+24])
+			if characteristic&0x2000 > 0 { // DLL
+				return newType("dll", "application/x-msdownload", "Dynamic-link library for Microsoft Windows"), nil
+			}
+			if characteristic&0x0002 > 0 { // Is valid executable
+				return newType("exe", "application/x-msdownload", "Executable file for Microsoft Windows"), nil
+			}
+			// TODO Check whether an executable image is 32-bit or 64-bit using the optional header: https://learn.microsoft.com/en-us/windows/win32/debug/pe-format#optional-header-image-only
+			// https://tech-zealots.com/malware-analysis/pe-portable-executable-structure-malware-analysis-part-2/
+		}
+		//return newType("exe", "application/x-msdownload", "Executable file for Microsoft Windows"), nil
+	}
+	if hasPrefix(buf, 0x25, 0x50, 0x44, 0x46) { // PDF
+		return newType("pdf", "application/pdf", "Portable Document Format"), nil
+	}
+	if hasPrefix(buf, 0x3C, 0x3C, 0x3C, 0x20, 0x4F, 0x72, 0x61, 0x63, 0x6C, 0x65, 0x20, 0x56, 0x4D, 0x20, 0x56, 0x69, 0x72, 0x74, 0x75, 0x61, 0x6C, 0x42, 0x6F, 0x78, 0x20, 0x44, 0x69, 0x73, 0x6B, 0x20, 0x49, 0x6D, 0x61, 0x67, 0x65, 0x20, 0x3E, 0x3E, 0x3E) { //VDI
+		// Note: The value tends to change every time the VirtualBox product name or owner changes, or if the VDI was created by a third party app. (source: https://forums.virtualbox.org/viewtopic.php?f=1&t=47732)
+		return newType("vdi", "application/x-virtualbox-vdi", "Oracle VirtualBox Disk Image"), nil
+	}
+	if hasPrefix(buf, 0x4C, 0x00, 0x00, 0x00, 0x01, 0x14, 0x02, 0x00) { // LNK
+		return newType("lnk", "application/x-ms-shortcut", "Windows shell link (shortcut) file"), nil
 	}
 	return FileType{}, errors.New("Unknown filetype")
 }

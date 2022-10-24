@@ -40,17 +40,19 @@
 
 ### Audio
 
-| Extension | MIME | Description | Condition | Comment |
-| --------- | ---- | ----------- | --------- | ------- |
-| aiff      |      |             |           |         |
-| wav       |      |             |           |         |
-| flac      |      |             |           |         |
-| opus      |      |             |           |         |
-| spx       |      |             |           |         |
-| ogx       |      |             |           |         |
-| mid       |      |             |           |         |
-| m4p       |      |             |           |         |
-| m4a       |      |             |           |         |
+| Extension | MIME            | Description                                            | Condition | Comment |
+| --------- | --------------- | ------------------------------------------------------ | --------- | ------- |
+| aiff      | audio/x-aiff    | Audio Interchange File Format                          |           |         |
+| flac      | audio/x-flac    | Free Lossless Audio Codec                              |           |         |
+| m4a       | audio/mp4       | ISO Media, Apple iTunes Audio encoded with AAC or ALAC |           |         |
+| m4p       | audio/m4p       | ISO Media, Apple iTunes Audio                          |           |         |
+| mid       | audio/midi      | MIDI sound file                                        |           |         |
+| oga       | audio/ogg       | An open source media container format (Audio)          |           |         |
+| ogg       | audio/ogg       | An open source media container format (Audio)          |           |         |
+| ogx       | application/ogg | An open source media container format                  |           |         |
+| opus      | audio/opus      | An open source media container format (Audio)          |           |         |
+| spx       | audio/ogg       | An open source media container format (Audio)          |           |         |
+| wav       | audio/x-wav     | Waveform Audio File Format                             |           |         |
 
 ### Archives
 
@@ -65,40 +67,46 @@
 | tar       |      |             |           |         |
 | 7z        |      |             |           |         |
 
-### Office
+### Office and documents
 
-| Extension | MIME | Description | Condition | Comment |
-| --------- | ---- | ----------- | --------- | ------- |
-| doc       |      |             |           |         |
-| ppt       |      |             |           |         |
-| xls       |      |             |           |         |
-| docx      |      |             |           |         |
-| pptx      |      |             |           |         |
-| xslx      |      |             |           |         |
+| Extension | MIME            | Description              | Condition | Comment |
+| --------- | --------------- | ------------------------ | --------- | ------- |
+| doc       |                 |                          |           |         |
+| ppt       |                 |                          |           |         |
+| xls       |                 |                          |           |         |
+| docx      |                 |                          |           |         |
+| pptx      |                 |                          |           |         |
+| xslx      |                 |                          |           |         |
+| epub      |                 |                          |           |         |
+| pdf       | application/pdf | Portable Document Format |           |         |
 
 ### Other
 
-| Extension | MIME | Description | Condition | Comment |
-| --------- | ---- | ----------- | --------- | ------- |
-| deb       |      |             |           |         |
-| iso       |      |             |           |         |
-| epub      |      |             |           |         |
-| apk       |      |             |           |         |
-| jar       |      |             |           |         |
+| Extension | MIME                                  | Description                                | Condition | Comment |
+| --------- | ------------------------------------- | ------------------------------------------ | --------- | ------- |
+| apk       | application/apk-archive               | Android package                            |           | WIP     |
+| class     | application/x-java-class              | Java class file                            |           |         |
+| deb       | application/vnd.debian.binary-package | Linux deb file                             |           |         |
+| dll       | application/x-msdownload              | Dynamic-link library for Microsoft Windows |           |         |
+| exe       | application/x-msdownload              | Executable file for Microsoft Windows      |           |         |
+| iso       | application/x-iso9660-image           | ISO9660 CD/DVD image file                  |           |         |
+| jar       | application/java-archive              | Java archive                               |           |         |
+| lnk       | application/x-ms-shortcut             | Windows shell link (shortcut) file         |           |         |
+| msi       | application/x-msi                     | Microsoft Software Installer               |           |         |
+| vdi       | application/x-virtualbox-vdi          | Oracle VirtualBox Image                    |           |         |
 
 ## TODO
 
-- .class (Java)
-- .exe
 - ELF
-- .dll
-- .lib
+- .lib Could not find much about the format, might use `ar` file format: https://en.wikipedia.org/wiki/Ar_(Unix)#File_format_details
 - .so
-- .msi
 - .ad1
-- .lnk
-- .pdf
-- .vmem
-- .raw
+- .vmem (53) FF 00 F0 53 FF 00 F0?
+- .vmss/.vmsn
+- .vmdk
+- .scr
 - encrypted zip?
+- .zlib
+- .msg
+- .gz
 - database formats

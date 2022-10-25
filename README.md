@@ -40,19 +40,19 @@
 
 ### Audio
 
-| Extension | MIME            | Description Comment                                    |
-| --------- | --------------- | ------------------------------------------------------ |
-| aiff      | audio/x-aiff    | Audio Interchange File Format                          |
-| flac      | audio/x-flac    | Free Lossless Audio Codec                              |
-| m4a       | audio/mp4       | ISO Media, Apple iTunes Audio encoded with AAC or ALAC |
-| m4p       | audio/m4p       | ISO Media, Apple iTunes Audio                          |
-| mid       | audio/midi      | MIDI sound file                                        |
-| oga       | audio/ogg       | An open source media container format (Audio)          |
-| ogg       | audio/ogg       | An open source media container format (Audio)          |
-| ogx       | application/ogg | An open source media container format                  |
-| opus      | audio/opus      | An open source media container format (Audio)          |
-| spx       | audio/ogg       | An open source media container format (Audio)          |
-| wav       | audio/x-wav     | Waveform Audio File Format                             |
+| Extension | MIME            | Description                                            | Comment |
+| --------- | --------------- | ------------------------------------------------------ | ------- |
+| aiff      | audio/x-aiff    | Audio Interchange File Format                          |         |
+| flac      | audio/x-flac    | Free Lossless Audio Codec                              |         |
+| m4a       | audio/mp4       | ISO Media, Apple iTunes Audio encoded with AAC or ALAC |         |
+| m4p       | audio/m4p       | ISO Media, Apple iTunes Audio                          |         |
+| mid       | audio/midi      | MIDI sound file                                        |         |
+| oga       | audio/ogg       | An open source media container format (Audio)          |         |
+| ogg       | audio/ogg       | An open source media container format (Audio)          |         |
+| ogx       | application/ogg | An open source media container format                  |         |
+| opus      | audio/opus      | An open source media container format (Audio)          |         |
+| spx       | audio/ogg       | An open source media container format (Audio)          |         |
+| wav       | audio/x-wav     | Waveform Audio File Format                             |         |
 
 ### Archives
 

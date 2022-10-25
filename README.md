@@ -70,45 +70,58 @@
 
 ### Office and documents
 
-| Extension | MIME                                                                      | Description                                          | Comment |
-| --------- | ------------------------------------------------------------------------- | ---------------------------------------------------- | ------- |
-| doc       | application/msword                                                        | MS Office Word document file                         |         |
-| docx      | application/vnd.openxmlformats-officedocument.wordprocessingml.document   | Office Open XML File Format                          |         |
-| epub      | application/epub+zip                                                      | E-book file format                                   |         |
-| msg       | application/vnd.ms-outlook                                                | Microsoft Outlook and MS Exchange email message file |         |
-| pdf       | application/pdf                                                           | Portable Document Format                             |         |
-| ppt       | application/vnd.ms-powerpoint                                             | MS Office PowerPoint presentation file               |         |
-| pptx      | application/vnd.openxmlformats-officedocument.presentationml.presentation | Office Open XML File Format                          |         |
-| xls       | application/vnd.ms-excel                                                  | MS Office Word excel file                            |         |
-| xslx      | application/vnd.openxmlformats-officedocument.spreadsheetml.sheet         | Office Open XML File Format                          |         |
+| Extension | MIME                                                                      | Description                                          | Comment                                |
+| --------- | ------------------------------------------------------------------------- | ---------------------------------------------------- | -------------------------------------- |
+| doc       | application/msword                                                        | MS Office Word document file                         | Word 2.0 file might cannot be detected |
+| docx      | application/vnd.openxmlformats-officedocument.wordprocessingml.document   | Office Open XML File Format                          |                                        |
+| epub      | application/epub+zip                                                      | E-book file format                                   |                                        |
+| msg       | application/vnd.ms-outlook                                                | Microsoft Outlook and MS Exchange email message file |                                        |
+| pdf       | application/pdf                                                           | Portable Document Format                             |                                        |
+| ppt       | application/vnd.ms-powerpoint                                             | MS Office PowerPoint presentation file               |                                        |
+| pptx      | application/vnd.openxmlformats-officedocument.presentationml.presentation | Office Open XML File Format                          |                                        |
+| xls       | application/vnd.ms-excel                                                  | MS Office Word excel file                            |                                        |
+| xslx      | application/vnd.openxmlformats-officedocument.spreadsheetml.sheet         | Office Open XML File Format                          |                                        |
 
 ### Other
 
-| Extension | MIME                                  | Description                                | Comment                                                                              |
-| --------- | ------------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------ |
-| ad1       | application/octet-stream              | Forensic Toolkit FTK Imager Image file     |                                                                                      |
-| apk       | application/apk-archive               | Android package                            | WIP                                                                                  |
-| class     | application/x-java-class              | Java class file                            |                                                                                      |
-| deb       | application/vnd.debian.binary-package | Linux deb file                             |                                                                                      |
-| dll       | application/x-msdownload              | Dynamic-link library for Microsoft Windows |                                                                                      |
-| elf       | application/x-elf                     | Executable and Linkable Format             |                                                                                      |
-| exe       | application/x-msdownload              | Executable file for Microsoft Windows      |                                                                                      |
-| iso       | application/x-iso9660-image           | ISO9660 CD/DVD image file                  |                                                                                      |
-| jar       | application/java-archive              | Java archive                               |                                                                                      |
-| lib       | application/octet-stream              | Windows Static Library                     | Should be compared to the linux static library format (.a) as they might be the same |
-| lnk       | application/x-ms-shortcut             | Windows shell link (shortcut) file         |                                                                                      |
-| msi       | application/x-msi                     | Microsoft Software Installer               |                                                                                      |
-| vdi       | application/x-virtualbox-vdi          | Oracle VirtualBox Image                    |                                                                                      |
+| Extension          | MIME                                  | Description                                | Comment                                                                              |
+| ------------------ | ------------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------ |
+| ad1                | application/octet-stream              | Forensic Toolkit FTK Imager Image file     |                                                                                      |
+| apk                | application/apk-archive               | Android package                            | WIP                                                                                  |
+| class              | application/x-java-class              | Java class file                            |                                                                                      |
+| deb                | application/vnd.debian.binary-package | Linux deb file                             |                                                                                      |
+| dll                | application/x-msdownload              | Dynamic-link library for Microsoft Windows |                                                                                      |
+| elf                | application/x-elf                     | Executable and Linkable Format             |                                                                                      |
+| evt                | application/octet-stream              | Windows Event Viewer file format           |                                                                                      |
+| evtx               | application/octet-stream              | Windows Event Viewer XML file format       |                                                                                      |
+| exe                | application/x-msdownload              | Executable file for Microsoft Windows      |                                                                                      |
+| iso                | application/x-iso9660-image           | ISO9660 CD/DVD image file                  |                                                                                      |
+| jar                | application/java-archive              | Java archive                               |                                                                                      |
+| lib                | application/octet-stream              | Windows Static Library                     | Should be compared to the linux static library format (.a) as they might be the same |
+| lnk                | application/x-ms-shortcut             | Windows shell link (shortcut) file         |                                                                                      |
+| msi                | application/x-msi                     | Microsoft Software Installer               |                                                                                      |
+| sqlite/db/sqlitedb | application/x-sqlite3                 | SQLite Database                            |                                                                                      |
+| vdi                | application/x-virtualbox-vdi          | Oracle VirtualBox Image                    |                                                                                      |
+| vmdk               | application/octet-stream              | Virtual Machine Disk                       |                                                                                      |
 
 ## TODO
 
 - .so
 - .vmem Maybe (53) FF 00 F0 53 FF 00 F0 - though don't have enough sample to check
 - .vmss/.vmsn
-- .vmdk
 - .scr Probably not possible as ".exe" and ".scr" files are almost identical
-- encrypted zip?
+- PKLITE / PKSFX
 - .zlib
 - .gz
-- .evt(x)
-- database formats
+- .xz
+- Word 2.0 File: DB A5 2D 00
+- What is a Perfect Office Document?? CF 11 E0 A1 B1 1A E1 00
+- Microsoft OneNote note: E4 52 5C 7B 8C D8 A7 4D AE B1 53 78 D0 29 96 D3
+- Windows 98 password file: E3 82 85 96
+- Bitcoin Core wallet.dat file: [8 byte offset] 00 00 00 00 62 31 05 00 09 00 00 00 00 20 00 00 00 09 00 00 00 00 00 00
+- Microsoft SQL Server 2000 database: 01 0F 00 00
+- Windows Disk Image file: 00 00 00 00 14 00 00 00
+- MultiBit Bitcoin wallet file: 0A 16 6F 72 67 2E 62 69 74 63 6F 69 6E 2E 70 72
+- MultiBit Bitcoin blockchain file: 53 50 56 42
+- MultiBit Bitcoin wallet information file: 6D 75 6C 74 69 42 69 74 2E 69 6E 66 6F
+- Bitcoin-Qt blockchain block file: F9 BE B4 D9

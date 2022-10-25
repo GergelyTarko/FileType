@@ -273,6 +273,12 @@ func GetFromBuffer(buf []byte) (FileType, error) {
 	if hasPrefix(buf, 0x1F, 0xA0) { //Z/LZH
 		return newType("Z", "application/x-compress", "Compressed tape archive file using Lempel-Ziv-Huffman compression"), nil
 	}
+	if hasPrefix(buf, 0x50, 0x4B, 0x05, 0x06) {
+		return newType("zip", "application/zip", "PKZIP empty archive file"), nil
+	}
+	if hasPrefix(buf, 0x50, 0x4B, 0x07, 0x08) {
+		return newType("zip", "application/zip", "PKZIP multivolume archive file"), nil
+	}
 	if hasPrefix(buf, 0x50, 0x4B, 0x03, 0x04) { // PK
 		/*
 			zip  	+
@@ -294,6 +300,9 @@ func GetFromBuffer(buf []byte) (FileType, error) {
 			vsdx
 			xlsx	+
 			xpi		+	*/
+		if hasPrefix(buf, 0x14, 0x00, 0x01, 0x00, 0x63, 0x00, 0x00, 0x00, 0x00, 0x00) { //encrypted
+			return newType("zip", "application/zip", "ZLock Pro encrypted ZIP"), nil
+		}
 		fileNameLength := binary.LittleEndian.Uint16(buf[26:28])
 		fileName := string(buf[30 : 30+(fileNameLength)])
 		if fileName == "mimetype" {
@@ -378,7 +387,7 @@ func GetFromBuffer(buf []byte) (FileType, error) {
 	/*  ================================================
 		==================== Other======================
 	    ================================================ */
-	if hasPrefix(buf, 0xCA, 0xFE, 0xBA, 0xBE) { // JAVA CLASS
+	if hasPrefix(buf, 0xCA, 0xFE, 0xBA, 0xBE) { // JAVA CLASS - CAFE BABE  :D
 		return newType("class", "application/x-java-class", "Java class file"), nil
 	}
 	if hasPrefix(buf, 0x4D, 0x5A) && len(buf) > 64 { // PE FILE http://www.pelib.com/resources/luevel.txt
@@ -418,6 +427,27 @@ func GetFromBuffer(buf []byte) (FileType, error) {
 	}
 	if hasPrefix(buf, 0x7F, 0x45, 0x4C, 0x46) { //ELF
 		return newType("elf", "application/x-elf", "Executable and Linkable Format"), nil
+	}
+	if hasPrefix(buf, 0x4C, 0x66, 0x4C, 0x65) || hasPrefix(buf, 0x30, 0x00, 0x00, 0x00, 0x4C, 0x66, 0x4C, 0x65) { //evt
+		return newType("evt", "application/octet-stream", "Windows Event Viewer file format"), nil
+	}
+	if hasPrefix(buf, 0x45, 0x6C, 0x66, 0x46, 0x69, 0x6C, 0x65) { //evtx
+		return newType("evtx", "application/octet-stream", "Windows Event Viewer XML file format"), nil
+	}
+	if hasPrefix(buf, 0x4B, 0x44, 0x4D) { //vmdk 4
+		if hasPrefix(buf, 0x4B, 0x44, 0x4D, 0x56) { //KDMV
+			return newType("vmdk", "application/octet-stream", "VMware 4 Virtual Disk (monolitic disk) file"), nil
+		}
+		return newType("vmdk", "application/octet-stream", "VMware 4 Virtual Disk (portion of a split disk) file"), nil // KDM
+	}
+	if hasPrefix(buf, 0x43, 0x4F, 0x57, 0x44) { // vmdk 3
+		return newType("vmdk", "application/octet-stream", "VMware 3 Virtual Disk (portion of a split disk) file"), nil
+	}
+	if hasPrefix(buf, 0x23, 0x20, 0x44, 0x69, 0x73, 0x6B, 0x20, 0x44, 0x65, 0x73, 0x63, 0x72, 0x69, 0x70, 0x74, 0x6F) { // vmdk 4
+		return newType("vmdk", "application/octet-stream", "VMware 4 Virtual Disk description file (split disk)"), nil
+	}
+	if hasPrefix(buf, 0x53, 0x51, 0x4C, 0x69, 0x74, 0x65, 0x20, 0x66, 0x6F, 0x72, 0x6D, 0x61, 0x74, 0x20, 0x33, 0x00) { //sqlite
+		return newType("sqlite", "application/x-sqlite3", "SQLite Database"), nil
 	}
 	return FileType{}, errors.New("Unknown filetype")
 }
